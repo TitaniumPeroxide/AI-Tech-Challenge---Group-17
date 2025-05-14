@@ -29,10 +29,14 @@
       <!-- Chat Window -->
       <div id="chatbox" class="chat-window" aria-live="polite"></div>
 
-      <!-- Prompt Context -->
-      <div id="prompt-context" class="prompt-context">
-        <strong>Current Question:</strong> <span id="current-prompt">Loading...</span>
-      </div>
+      <!-- Footer Status -->
+      <footer class="status-bar">
+        <div id="typing-indicator" class="typing-indicator">Assistant is typing...</div>
+        <div class="progress-info">
+          Step <span id="current-step">1</span> of <span id="total-steps">3</span>
+        </div>
+      </footer>
+
 
       <!-- User Input Area -->
       <form class="input-area" onsubmit="event.preventDefault(); sendMessage();">
@@ -47,13 +51,7 @@
         <button type="submit" id="sendButton">Send</button>
       </form>
 
-      <!-- Footer Status -->
-      <footer class="status-bar">
-        <div id="typing-indicator" class="typing-indicator">Assistant is typing...</div>
-        <div class="progress-info">
-          Step <span id="current-step">1</span> of <span id="total-steps">3</span>
-        </div>
-      </footer>
+      
     </section>
 
     <!-- Optional: Side panel or summary (future use) -->
