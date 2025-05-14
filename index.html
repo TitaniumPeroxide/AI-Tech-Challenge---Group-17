@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loan Evaluation Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="chat-app">
+    <section class="chat-card">
+      <header>
+        <h1>Loan Evaluation Assistant</h1>
+        <p>Determine your eligibility quickly and easily</p>
+      </header>
+
+      <div id="chatbox" class="chat-window"></div>
+
+      <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your answer..." autocomplete="off" />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+
+      <footer class="status-bar">
+        <div id="typing-indicator">Assistant is typing...</div>
+        <div class="step">Step <span id="current-step">1</span>/<span id="total-steps">3</span></div>
+      </footer>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
