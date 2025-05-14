@@ -2,109 +2,106 @@ let currentSectionIndex = 0;
 let totalScore = 0;
 
 const sectionOrder = ["Age", "Visa/Residency Status", "Duration in Ireland"];
-const chatbox = document.getElementById("chatbox");
-const inputField = document.getElementById("userInput");
-const stepIndicator = document.getElementById("current-step");
-const totalSteps = document.getElementById("total-steps");
-const typingIndicator = document.getElementById("typing-indicator");
+const DOM = {
+  chatbox: document.getElementById("chatbox"),
+  inputField: document.getElementById("userInput"),
+  stepIndicator: document.getElementById("current-step"),
+  totalSteps: document.getElementById("total-steps"),
+  typingIndicator: document.getElementById("typing-indicator"),
+};
 
-totalSteps.textContent = sectionOrder.length;
+DOM.totalSteps.textContent = sectionOrder.length;
 
 window.onload = () => {
   displayMessage("👋 Welcome to the Loan Evaluation Assistant!", "bot");
-  triggerBackendForQuestion();
+  loadNextQuestion();
 };
 
-// Event listener for 'Enter' key press to send message
-inputField.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault(); // Prevent the default Enter behavior (new line)
-    sendMessage();
+DOM.inputField.addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    handleUserInput();
   }
 });
 
-async function sendMessage() {
-  const userText = inputField.value.trim();
-  if (!userText) return;
+async function handleUserInput() {
+  const userInput = DOM.inputField.value.trim();
+  if (!userInput) return;
 
-  displayMessage(userText, "user");
-  inputField.value = "";
+  displayMessage(userInput, "user");
+  DOM.inputField.value = "";
 
-  const currentSection = sectionOrder[currentSectionIndex];
+  const section = sectionOrder[currentSectionIndex];
+  showTyping(true);
 
   try {
-    showTypingIndicator(true);
-
-    const response = await fetch("https://solid-guacamole-vwwr5wv76v7fx7gg-5000.app.github.dev/evaluate", {
+    const response = await fetch("/evaluate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        section: currentSection,
-        question: currentSection,
-        answer: userText,
-      }),
+      body: JSON.stringify({ section, question: section, answer: userInput }),
     });
 
     if (!response.ok) throw new Error("Server error");
 
-    const data = await response.json();
-    totalScore += data.score;
+    const { section: sec, answer, score, reason, eligability } = await response.json();
+    totalScore += score;
 
-    const botMessage = `✅ **${data.section}**\nAnswer: ${data.answer}\nScore: ${data.score}\nReason: ${data.reason}\nEligibility: ${data.eligability}`;
-    displayMessage(botMessage, "bot");
+    displayMessage(
+      `✅ **${sec}**\nAnswer: ${answer}\nScore: ${score}\nReason: ${reason}\nEligibility: ${eligability}`,
+      "bot"
+    );
 
     currentSectionIndex++;
-    stepIndicator.textContent = currentSectionIndex + 1;
+    DOM.stepIndicator.textContent = currentSectionIndex + 1;
 
-    if (currentSectionIndex < sectionOrder.length) {
-      triggerBackendForQuestion();
-    } else {
-      displayMessage(
-        totalScore > 50 ? "🎉 Loan Approved!" : "❌ Loan Denied.",
-        "bot"
-      );
-      displayMessage(`Final Score: ${totalScore}`, "bot");
-    }
-  } catch (error) {
+    currentSectionIndex < sectionOrder.length
+      ? loadNextQuestion()
+      : showFinalResult();
+  } catch (err) {
+    console.error(err);
     displayMessage("⚠️ Error connecting to the server. Please try again later.", "bot");
-    console.error(error);
   } finally {
-    showTypingIndicator(false);
+    showTyping(false);
   }
 }
 
-async function triggerBackendForQuestion() {
-  const currentSection = sectionOrder[currentSectionIndex];
+async function loadNextQuestion() {
+  const section = sectionOrder[currentSectionIndex];
+  showTyping(true);
 
   try {
-    showTypingIndicator(true);
-
-    const response = await fetch("https://solid-guacamole-vwwr5wv76v7fx7gg-5000.app.github.dev/get_question", {
+    const res = await fetch("/get_question", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ section: currentSection }),
+      body: JSON.stringify({ section }),
     });
 
-    if (!response.ok) throw new Error("Server error");
+    if (!res.ok) throw new Error("Server error");
 
-    const data = await response.json();
-    displayMessage(data.question, "bot");
-  } catch (error) {
+    const { question } = await res.json();
+    displayMessage(question, "bot");
+  } catch (err) {
+    console.error(err);
     displayMessage("⚠️ Failed to load the question.", "bot");
-    console.error(error);
   } finally {
-    showTypingIndicator(false);
+    showTyping(false);
   }
 }
 
-function displayMessage(message, sender) {
-  const messageDiv = document.createElement("div");
-  messageDiv.className = `message ${sender}`;
-  messageDiv.innerText = message;
-  chatbox.appendChild(messageDiv);
-  chatbox.scrollTop = chatbox.scrollHeight;
+function showFinalResult() {
+  const resultMessage = totalScore > 50 ? "🎉 Loan Approved!" : "❌ Loan Denied.";
+  displayMessage(resultMessage, "bot");
+  displayMessage(`Final Score: ${totalScore}`, "bot");
 }
 
-function showTypingIndicator(show) {
-  typingIndicator.style.display = show ? "block" : "none";
+function displayMessage(msg, sender) {
+  const msgDiv = document.createElement("div");
+  msgDiv.className = `message ${sender}`;
+  msgDiv.innerText = msg;
+  DOM.chatbox.appendChild(msgDiv);
+  DOM.chatbox.scrollTop = DOM.chatbox.scrollHeight;
+}
+
+function showTyping(visible) {
+  DOM.typingIndicator.style.display = visible ? "block" : "none";
 }
