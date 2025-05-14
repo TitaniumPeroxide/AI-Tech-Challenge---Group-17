@@ -9,23 +9,55 @@
 <body>
   <main class="chat-app">
     <section class="chat-card">
-      <header>
-        <h1>Loan Evaluation Assistant</h1>
-        <p>Determine your eligibility quickly and easily</p>
+      <!-- Header -->
+      <header class="chat-header">
+        <h1>🏦 Loan Evaluation Assistant</h1>
+        <p class="subtext">Answer a few quick questions to check if you're eligible for a loan.</p>
       </header>
 
-      <div id="chatbox" class="chat-window"></div>
-
-      <div class="input-area">
-        <input type="text" id="userInput" placeholder="Type your answer..." autocomplete="off" />
-        <button onclick="sendMessage()">Send</button>
+      <!-- Welcome Instructions -->
+      <div class="info-banner">
+        <h2>💡 How it works</h2>
+        <ul>
+          <li>The assistant will ask 3 short questions.</li>
+          <li>Your answers are scored instantly.</li>
+          <li>You’ll see your eligibility status and score at the end.</li>
+        </ul>
+        <p><strong>Tip:</strong> Be honest and accurate for the best results.</p>
       </div>
 
+      <!-- Chat Window -->
+      <div id="chatbox" class="chat-window" aria-live="polite"></div>
+
+      <!-- Prompt Context -->
+      <div id="prompt-context" class="prompt-context">
+        <strong>Current Question:</strong> <span id="current-prompt">Loading...</span>
+      </div>
+
+      <!-- User Input Area -->
+      <form class="input-area" onsubmit="event.preventDefault(); sendMessage();">
+        <label for="userInput" class="visually-hidden">Your Answer</label>
+        <input
+          type="text"
+          id="userInput"
+          placeholder="Type your response and press Enter or click Send..."
+          autocomplete="off"
+          aria-label="Your response"
+        />
+        <button type="submit" id="sendButton">Send</button>
+      </form>
+
+      <!-- Footer Status -->
       <footer class="status-bar">
-        <div id="typing-indicator">Assistant is typing...</div>
-        <div class="step">Step <span id="current-step">1</span>/<span id="total-steps">3</span></div>
+        <div id="typing-indicator" class="typing-indicator">Assistant is typing...</div>
+        <div class="progress-info">
+          Step <span id="current-step">1</span> of <span id="total-steps">3</span>
+        </div>
       </footer>
     </section>
+
+    <!-- Optional: Side panel or summary (future use) -->
+    <!-- <aside class="summary-panel">Summary of scores goes here</aside> -->
   </main>
 
   <script src="script.js"></script>
