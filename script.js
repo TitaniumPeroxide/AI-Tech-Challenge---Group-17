@@ -35,7 +35,7 @@ async function handleUserInput() {
   showTyping(true);
 
   try {
-    const response = await fetch("/evaluate", {
+    const response = await fetch("https://humble-umbrella-466vr679j6rfw46-5000.app.github.dev/evaluate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ section, question: section, answer: userInput }),
@@ -70,7 +70,7 @@ async function loadNextQuestion() {
   showTyping(true);
 
   try {
-    const res = await fetch("/get_question", {
+    const res = await fetch("https://humble-umbrella-466vr679j6rfw46-5000.app.github.dev/get_question", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ section }),
