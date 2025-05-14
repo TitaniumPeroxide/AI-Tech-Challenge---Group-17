@@ -35,7 +35,7 @@ async function sendMessage() {
   try {
     showTypingIndicator(true);
 
-    const response = await fetch("http://127.0.0.1:5000/evaluate", {
+    const response = await fetch("https://solid-guacamole-vwwr5wv76v7fx7gg-5000.app.github.dev/evaluate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -79,7 +79,7 @@ async function triggerBackendForQuestion() {
   try {
     showTypingIndicator(true);
 
-    const response = await fetch("http://127.0.0.1:5000/get_question", {
+    const response = await fetch("https://solid-guacamole-vwwr5wv76v7fx7gg-5000.app.github.dev/get_question", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ section: currentSection }),

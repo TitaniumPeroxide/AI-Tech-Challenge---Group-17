@@ -1,2 +1,2 @@
-openAI_apiKey = "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"
+openAI_apiKey=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
 openAI_endPoint = "https://api.openai.com/v1/chat/completions"
