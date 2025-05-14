@@ -103,15 +103,6 @@ body {
   color: #223344;
 }
 
-/* Prompt Context */
-.prompt-context {
-  font-size: 0.95rem;
-  background-color: #f8fbff;
-  border-left: 4px solid #c0daf0;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  color: #40658a;
-}
 
 /* Input Area */
 .input-area {
