@@ -1,7 +1,7 @@
 let currentSectionIndex = 0;
 let totalScore = 0;
 
-const sectionOrder = ["Age", "Education", "Visa Status", "Utility Payment"];
+const sectionOrder = ["age", "mental health", "years in ireland", "Education", "Previous Work Experience", "Phone service provider", "Driving History", "What do you do for fun"];
 const DOM = {
   chatbox: document.getElementById("chatbox"),
   inputField: document.getElementById("userInput"),
@@ -35,7 +35,7 @@ async function handleUserInput() {
   showTyping(true);
 
   try {
-    const response = await fetch("https://cuddly-winner-466vr679w5x355v7-5000.app.github.dev//evaluate", {
+    const response = await fetch("https://stunning-guacamole-rww6xwgv7rrfwjwj-5000.app.github.dev/evaluate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ section, question: section, answer: userInput }),
@@ -67,7 +67,7 @@ async function loadNextQuestion() {
   showTyping(true);
 
   try {
-    const res = await fetch("https://cuddly-winner-466vr679w5x355v7-5000.app.github.dev/get_question", {
+    const res = await fetch("https://stunning-guacamole-rww6xwgv7rrfwjwj-5000.app.github.dev/get_question", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ section }),
